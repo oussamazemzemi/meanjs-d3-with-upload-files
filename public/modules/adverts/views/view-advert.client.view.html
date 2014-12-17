@@ -1,0 +1,68 @@
+<style type="text/css">
+    #prix{
+    background: url("https://secure-pap.pap.fr/images/annonceur/bg-input-price.gif") no-repeat right center;
+    }
+    #surfaceH,#surfaceT{
+    background: url("https://secure-pap.pap.fr/images/annonceur/bg-input-surface.gif") no-repeat right center;
+    }
+    body{
+    background-image: url("http://www.immosourcing.ch/img/background.png");
+    }
+    .circular {
+    width:100px;
+    height:100px;
+	 border-radius: 150px;
+	 -webkit-border-radius: 150px;
+	 -moz-border-radius: 150px;
+	}
+</style>
+<section data-ng-controller="AdvertsController" data-ng-init="findOne()">
+	<div class="page-header">
+		<h3 data-ng-bind="advert.name"></h3>
+	</div>
+
+	<div class="page-left">
+		<p data-ng-bind="advert.textA"></p>
+	</div>
+	<div id="images" class="pull-right" style="display: table-caption;">	
+		<div ng-repeat="item in advert.image track by $index" >	
+			<img class="circular" src="{{item}}" alt="" >
+		</div>
+	</div>
+	<div class="pull-right" style="border-radius: 6px;padding: 30px;">
+		<label for="prix">Prix</label>
+		<h4 id="prix"  data-ng-bind="advert.prix"></h4>
+		<label for="nbpiece">nbpiece</label>
+		<h4 id="nbpiece"  data-ng-bind="advert.nbpiece"></h4>
+		<label for="typebien">typebien</label>
+		<h4 id="typebien"  data-ng-bind="advert.typebien"></h4>
+		<label for="surfaceH">surfaceH</label>
+		<h4 id="surfaceH"  data-ng-bind="advert.surfaceH"></h4>
+		<label for="surfaceT">surfaceT</label>
+		<h4 id="surfaceT"  data-ng-bind="advert.surfaceT"></h4>
+	</div>
+	
+
+	<carteview></carteview>
+
+	<div class="page-footer" data-ng-show="authentication.user._id == advert.user._id">
+		<a class="btn btn-primary" href="/#!/adverts/{{advert._id}}/edit">
+			<i class="glyphicon glyphicon-edit"></i>
+		</a>
+		<a class="btn btn-primary" data-ng-click="remove();">
+			<i class="glyphicon glyphicon-trash"></i>
+		</a>
+		<small>
+		<em class="text-muted">
+			Posted on
+			<span data-ng-bind="advert.created | date:'mediumDate'"></span>
+			by
+			<span data-ng-bind="advert.user.displayName"></span>
+			<span id="immoBat" ></span>
+		</em>
+	</small>
+	</div>
+	
+	
+	
+</section>

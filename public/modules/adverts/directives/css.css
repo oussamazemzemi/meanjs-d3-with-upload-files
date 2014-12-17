@@ -1,0 +1,21 @@
+.buildings {
+    stroke: rgb(115, 177, 253);
+    stroke-width: 1px;
+    fill: antiquewhite;
+}
+.buildings.over {
+    stroke: #aaa;
+    stroke-width: 3px;
+    fill: #FFC5C5;
+    cursor: pointer;
+}
+.buildings.select {
+    stroke: #963766;
+    stroke-width: 3px;
+    fill: #963766;
+}
+
+/*ul{
+	margin-top: 0px;
+}*/
+

@@ -1,0 +1,171 @@
+
+// Adverts controller
+
+angular.module('adverts').controller('AdvertsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Adverts',
+'$http', '$timeout', '$upload',
+	function($scope, $stateParams, $location, Authentication, Adverts, $http, $timeout, $upload) {
+		$scope.authentication = Authentication;
+		$scope.param={};
+		//image		
+		$scope.uploadRightAway = false; 
+
+		// Create new Advert
+		$scope.create = function() {
+
+		//image
+		console.log($scope.selectedFiles.length);
+    	  $files = $scope.selectedFiles;
+        $scope.progress[index] = 0;
+        console.log('starting...');
+        //console.log($files);
+        $scope.paths = [];
+      for (var index = 0; index < $files.length; index++) {
+        console.log('path= '+$files[index].name);
+        $scope.paths[index] = './uploads/'+$files[index].name; 
+        $scope.upload[index] = $upload.upload({
+        		method: 'POST',
+            url: 'upload',
+            headers: {'Content-Type': 'multipart/form-data' },
+            file: $scope.selectedFiles[index],
+            fileFormDataName: 'myFile'
+                    }).then(function (_result) {
+                console.log("$upload: " + JSON.stringify(_result));
+                //file.cancel()
+            }, function error(err) {
+                console.log('[$upload] received error: ' + JSON.stringify(err));
+            });
+        
+        }
+    console.log('hang...');
+    
+			//fin image						
+			
+			// Create new Advert object
+			var advert = new Adverts ({
+				name: this.name,
+				surfaceH: this.surfaceH,
+				surfaceT: this.surfaceT,
+				prix: this.prix,
+				typebien: this.typebien,
+				nbpiece: this.nbpiece,
+				exampleInputEmail1: this.exampleInputEmail1,
+				energie: this.energie,
+				textA: this.textA,
+				emailC: this.emailC,
+				telephone: this.telephone,
+				immoBat: document.getElementById('immoBat').value,
+				image: $scope.paths
+			});
+
+			// Redirect after save
+			advert.$save(function(response) {
+				$location.path('adverts/' + response._id);
+
+				// Clear form fields
+				$scope.name = '';
+				$scope.surfaceH = '';
+				$scope.surfaceT = '';
+				$scope.prix = '';
+				$scope.typebien = '';
+				$scope.nbpiece = '';
+				$scope.exampleInputEmail1 = '';
+				$scope.energie = '';
+				$scope.textA = '';
+				$scope.emailC = '';
+				$scope.telephone = '';
+				$scope.immoBat = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Remove existing Advert
+		$scope.remove = function( advert ) {
+			if ( advert ) { advert.$remove();
+
+				for (var i in $scope.adverts ) {
+					if ($scope.adverts [i] === advert ) {
+						$scope.adverts.splice(i, 1);
+					}
+				}
+			} else {
+				$scope.advert.$remove(function() {
+					$location.path('adverts');
+				});
+			}
+		};
+
+		// Update existing Advert
+		$scope.update = function() {
+			var advert = $scope.advert ;
+
+			advert.$update(function() {
+				$location.path('adverts/' + advert._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Find a list of Adverts
+		$scope.find = function() {
+			$scope.adverts = Adverts.query();
+		};
+
+		// Find existing Advert
+		$scope.findOne = function() {
+			$scope.advert = Adverts.get({
+				advertId: $stateParams.advertId
+			});
+		};
+		
+		  $scope.selectedFiles = [];
+		  $scope.progress = [];
+        $scope.upload = [];
+        $scope.uploadResult = [];
+        $scope.dataUrls = [];
+        
+		  $scope.onFileSelect = function ($files) {
+		  	
+        $scope.selectedFiles = $files;
+        
+        //limite
+        if($files.length>4)
+			{$files.length=4;}
+        
+        for (var i = 0; i < $files.length; i++) {
+            var $file = $files[i];
+            if (window.FileReader && $file.type.indexOf('image') > -1) {
+                var fileReader = new FileReader();
+                fileReader.readAsDataURL($files[i]);
+                function setPreview(fileReader, index) {
+                    fileReader.onload = function (e) {
+                        $timeout(function () {
+                            $scope.dataUrls[index] = e.target.result;
+                        });
+                    }
+                }
+
+                setPreview(fileReader, i);
+            }
+            $scope.progress[i] = -1;
+        }
+    
+    };
+    
+ 
+		// Find a list of Adverts
+		$scope.deleteImg = function(idImage) {
+		
+			//var array = $scope.advert.image; // Test
+			
+			delete $scope.advert.image[idImage];
+        			//array.splice(idImage,1);
+         		// break;       //<-- Uncomment  if only the first term has to be removed
+    		console.log($scope.advert.image);
+    		document.getElementById(idImage).remove();
+			document.getElementById('x'+idImage).remove();
+		
+		};
+    
+	}
+]);

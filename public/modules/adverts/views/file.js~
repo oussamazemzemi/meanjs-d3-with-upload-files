@@ -1,0 +1,34 @@
+'use strict';
+
+angular.module('adverts').directive('file', function(){
+    return {
+        scope: {
+            file: '=',
+            path: '='
+        },
+        link: function(scope, el, attrs){
+            el.bind('change', function(event){
+                var files = event.target.files;
+                var file = files[0];
+                scope.file = file ? file.name : undefined;
+                scope.$apply();
+                console.log(file);
+            });
+        }
+    };
+});
+//function MainController($scope){
+//    $scope.param = {};
+//}
+
+angular.module('adverts').directive('d3', function(){
+    return {
+
+        link: function(scope, el, attrs){
+            el.bind('change', function(event){
+                $http json
+                la creation de l//'interface
+            });
+        }
+    };
+});

@@ -1,0 +1,139 @@
+function main(data){
+
+	var buildings = [], roads = [], amenities = [], naturals = [];
+var i;
+for(i = data.length - 1; i > 0; i-- ){
+
+	if(typeof data[i].building !== 'undefined' && data[i].building === true )
+		{
+		//console.log('buildings');
+		buildings.push( shapes.createBuilding(data[i]) );
+		}
+	else if(typeof data[i].natural !== 'undefined' && data[i].natural === 'water')
+		{
+		naturals.push( shapes.createNatural(data[i]));
+		//console.log(data[i].natural);
+		}
+	else if(typeof data[i].amenity !== 'undefined' && (data[i].amenity === 'hospital' || data[i].amenity === 'parking'))
+		{
+		amenities.push(shapes.createAmenity(data[i]));
+		}
+	else
+		{
+		roads.push( shapes.createRoad(data[i]) );
+		}
+
+
+}
+
+//_.each(buildings, function(b){console.log(b.toString())});
+
+/*_.each(buildings, function(b){console.log(b.toString())});
+_.each(roads, function(b){console.log(b.toString())});
+_.each(naturals, function(b){console.log(b.toString())});
+_.each(amenities, function(b){console.log(b.toString())});*/
+
+var w = document.body.clientWidth;
+var h = w/2;
+//The SVG Container
+var svgContainer = d3.select('#map').append('svg')
+																		.attr('width', w/2.5)
+																		.attr('height', h/2)
+									.append('g')
+									.attr('transform', 'scale('+(w/(1.2*w))+')');
+
+var p = '';
+_.each(naturals, function(b){
+	p=p+' '+b.toSvgPath();
+	//console.log(b.toSvgPath());
+	//console.log(p);
+	});
+
+var sp = p.split('M');
+
+for ( var int = 0; int < sp.length; int++) {
+svgContainer.append('path')
+			.attr('d', function(d) {return 'M '+sp[int];})
+			.attr('stroke', 'green')
+			.attr('stroke-width', 1)
+			.attr('fill', 'rgb(148, 244, 152)');
+}
+
+p='';
+
+_.each(roads, function(b){
+	p=p+' '+b.toSvgPath();
+	//console.log(b.toSvgPath());
+	//console.log(p)
+	});
+
+sp = p.split('M');
+
+for ( var int = 0; int < sp.length; int++) {
+svgContainer.append('path')
+			.attr('d', function(d) {return 'M '+sp[int];})
+			.attr('stroke', 'grey')
+			.attr('stroke-width', 1)
+			.attr('fill', 'rgb(171, 204, 255)');
+}
+
+p='';
+_.each(amenities, function(b){
+	p=p+' '+b.toSvgPath();
+	//console.log(b.toSvgPath());
+	//console.log(p)
+	});
+
+sp = p.split('M');
+
+for ( var int = 0; int < sp.length; int++) {
+svgContainer.append('path')
+			.attr('d', function(d) {return 'M '+sp[int];})
+			.attr('stroke', 'grey')
+			.attr('stroke-width', 1)
+			.attr('fill', 'rgb(218, 218, 218)');
+}
+
+p='';
+_.each(buildings, function(b){
+	p=p+' '+b.toSvgPath();
+	//console.log(b.toSvgPath());
+	//console.log(p)
+	});
+
+sp = p.split('M');
+
+for ( var int = 0; int < sp.length; int++) {
+svgContainer.append('path')
+	.classed('buildings',1)
+	.attr('id',function(d, i ){return int;})
+	.attr('d', function(d) {return 'M '+sp[int];})
+	.on('click', function(d,i){
+		d3.select(this)
+			.classed('select',1);
+		})
+	.on('dblclick', function(d,i){
+		d3.select(this)
+			.classed('select',0);
+		})
+	.on('mouseover', function(d, i){
+			d3.select(this)
+				.classed('over', 1);
+		})
+		.on('mouseout', function(d, i){
+			d3.select(this)
+				.classed('over', 0);
+		});
+
+	}
+}
+
+
+//$.getJSON('eure.json').success(main);
+var app = angular.module("MyApp", []);
+
+app.controller("PostsCtrl", function($scope, $http) {
+  $http.get('eure.json').
+    success(main)
+    
+});

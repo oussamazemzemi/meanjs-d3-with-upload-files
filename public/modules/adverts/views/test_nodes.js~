@@ -1,0 +1,42 @@
+var shapes = require('./shapes2.js');
+var fs = require('fs'); //file system
+var raw_data = fs.readFileSync('eure.json', 'utf8');
+var data = JSON.parse(raw_data);
+var _ = require('lodash');
+var buildings = [], roads = [], amenities = [], naturals = [];
+var i;
+for(i = data.length - 1; i > 0; i-- ){
+	
+	if(typeof data[i].building !== 'undefined' && data[i].building === true )
+		{
+		//console.log("buildings");
+		buildings.push( shapes.createBuilding(data[i]) );
+		}
+	else if(typeof data[i].natural !== 'undefined' && data[i].natural === 'water')
+		{
+		naturals.push( shapes.createNatural(data[i]));
+		//console.log(data[i].natural);
+		}
+	else if(typeof data[i].amenity !== 'undefined' && (data[i].amenity === 'hospital' || data[i].amenity === 'parking'))
+		{
+		amenities.push(shapes.createAmenity(data[i]));
+		}
+	else
+		{
+		roads.push( shapes.createRoad(data[i]) );
+		}
+	
+
+}
+
+//_.each(buildings, function(b){console.log(b.toString())});
+
+/*_.each(buildings, function(b){console.log(b.toString())});
+_.each(roads, function(b){console.log(b.toString())});
+_.each(naturals, function(b){console.log(b.toString())});
+_.each(amenities, function(b){console.log(b.toString())});*/
+
+_.each(buildings, function(b){
+	//console.log(b.toSvgPath());
+	console.log(b.toSvgPath())});
+

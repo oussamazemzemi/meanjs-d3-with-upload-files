@@ -1,0 +1,155 @@
+<style type="text/css">
+    #prix{
+    background: white url("https://secure-pap.pap.fr/images/annonceur/bg-input-price.gif") no-repeat right center;
+    }
+    #surfaceH,#surfaceT{
+    background: white url("https://secure-pap.pap.fr/images/annonceur/bg-input-surface.gif") no-repeat right center;
+    }
+    body{
+    background-image: url("http://www.immosourcing.ch/img/background.png");
+    }
+    </style>
+
+<section data-ng-controller="AdvertsController">
+    <div class="page-header">
+        <h1>New Immo</h1>
+    </div>
+<form class="form-horizontal" id="immoF" name="immoForm" data-ng-submit="create()" novalidate>
+		
+    <div class="col-md-12">
+       
+		 
+	     	<div class="col-md-6">
+	    <div class="form-group">
+              <label for="titre">Titre</label>
+              <input type="text" data-ng-model="name" required class="form-control" id="name" placeholder="Entrer le Titre" autofocus>
+            </div>
+                <div class="form-group">
+                <label for="typebien">Type de bien</label>
+            <select id="typebien" data-ng-model="typebien" required name="typebien" class="form-control">
+              <option value="maison"> Maison</option>
+              <option value="appartement"> Appartement</option>
+              <option value="loft-atelier"> Loft, atelier</option>
+              <option value="surface-a-amenager"> Surfaces diverses</option>
+              <option value="terrain"> Terrain</option>
+              <option value="immeuble"> Immeuble</option>
+              <option value="garage-parking"> Garage, parking</option>
+              <option value="peniche"> Péniche</option>
+              <option value="multipropriete"> Multipropriété</option>
+              <option value="viager"> Viager</option>
+              <option value="mobil-home"> Chalet, mobil-home</option>
+              <option value="residence-avec-service"> Résidence avec services</option>
+              <option value="divers"> Propositions diverses</option>
+            </select>
+                </div>
+                <div class="form-group">
+                  <label for="surfaceH">Surface Habitable</label>
+                  <input type="number" data-ng-model="surfaceH" required min="0" class="form-control" id="surfaceH" placeholder="Entrer la surface Habitable">
+                </div>
+                <div class="form-group">
+                  <label for="surfaceT">Surface du Terrain</label>
+                  <input type="number" data-ng-model="surfaceT" required min="0" class="form-control" id="surfaceT" placeholder="Entrer la surface du Terrain">
+                </div>
+                <div class="form-group">
+                  <label for="prix">Prix</label>
+                  <input type="number" data-ng-model="prix" required min="0" class="form-control" id="prix" placeholder="Entrer le prix">
+                </div>
+		</div>
+	     	<div class="col-md-3 col-md-offset-3">
+                <div class="form-group">
+                  <label for="nbpiece">Nombre de piéces</label>
+                  <select id="nbpiece" data-ng-model="nbpiece" required  class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email adresse</label>
+                  <input type="email" data-ng-model="exampleInputEmail1" required class="form-control" id="exampleInputEmail1" placeholder="Entrer email">
+                </div>
+                <div class="form-group">
+                  <label for="energie">Classe énergie</label>
+                  <img data-toggle="tooltip" title="La classe énergie est déterminée suite à l'intervention d'un technicien certifié pour le diagnostic de performance énergétique. N'indiquez pas de classification si vous n'avez pas encore fait intervenir un prestataire." alt="info" src="http://www.compegps.fr/2011/images/Information.png">
+                  <select id="energie" required data-ng-model="energie" class="form-control">
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                    <option>D</option>
+                    <option>E</option>
+                    <option>F</option>
+                    <option>G</option>
+                  </select>
+                </div>
+                 <div class="form-group">
+                    <label for="textA">Texte de l'annonce</label>
+                    <textarea id="textA" data-ng-model="textA" required placeholder="Texte de l'annonce" class="form-control" rows="5"></textarea>
+                 </div>
+	     </div>
+	   </div>
+	   <div class="col-md-12">
+	<!--<a href="#!/adverts/create#valider"><button type="submit" class="btn btn-primary btn-lg btn-block">Suivant</button></a>-->
+	<fieldset>
+	<span data-ng-show="error" class="text-danger">
+	<alert type="danger"><span data-ng-bind="error"></span></alert>
+	</span>
+	</fieldset>
+	</div>
+	   <div class="col-md-12">
+	   <tabset justified="true">
+
+	    <tab heading="Carte + Zoom">
+	    	<div class="form-group" >
+		  	  <carte></carte> 
+  		   </div> 	    
+		 </tab>
+		 <tab heading="Images">
+		  <div class="col-lg-12" style="padding:20px;">
+		      <div class="col-md-6">
+					<div ng-show="dropSupported" class="drop-box" ng-file-drop="onFileSelect($files);" data-multiple="true"
+							ng-file-drop-available="dropSupported=true" accept="image/*" ng-file-model="myFiles">Glisser au maximum 4 images
+					</div>
+					
+					<div ng-show="!dropSupported">HTML5 Drop File is not supported on this browser</div>
+		      </div>
+		      <div class="col-md-6">
+					<div ng-show="selectedFiles != null">
+							<div class="sel-file" ng-repeat="f in selectedFiles">
+							<hr>
+									<img ng-show="dataUrls[$index]" ng-src="{{dataUrls[$index]}}">
+									{{f.name}} - size: {{f.size}}B - type: {{f.type}}
+							</div>
+							
+					</div>
+				</div>
+				           
+		    </div>
+		    
+		 </tab>
+	    <tab heading="Info Perso">
+		   
+		    <div class="col-lg-6">
+			<h3>Vos contacts</h3>
+		        <hr>
+		        <div class="form-group" >
+		        <label for="emailC">Email address</label>
+		        <input type="email" data-ng-model="emailC" class="form-control" id="emailC" placeholder="Enter email">
+		        </div>
+		        <div class="form-group">
+		        <label for="telephone">N° Telephone</label>
+		        <input type="tel"  data-ng-model="telephone" class="form-control" id="telephone" placeholder="Entrer N° Telephone">
+		        </div>
+		    </div>
+	    </tab>
+	   
+	  </tabset>
+	   </div>
+  <footer class="col-md-12">
+	<button type="submit" class="btn btn-success btn-lg btn-block">Valider</button>
+  </footer>
+
+    
+</form>
+</section>

@@ -1,0 +1,16 @@
+function addHidden(theForm, key, value){
+	var input = document.createElement('input');
+	input.type = 'hidden';
+	input.name = key;
+	input.value = value;
+	theForm.appendChild(input);
+
+
+}
+
+function clickBat(id){
+alert(id);
+var theForm = document.forms[theFormName];
+addHidden('articleForm', 'key', 'value');
+
+}
